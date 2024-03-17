@@ -7,13 +7,57 @@ import { LuDot, LuMapPin, LuRepeat2 } from "react-icons/lu";
 import { MdOutlineGifBox } from "react-icons/md";
 import { RiGalleryLine, RiListCheck2 } from "react-icons/ri";
 import { SlCalender } from "react-icons/sl";
+import axios from "axios";
+import { useState } from "react";
+import Cookies from "universal-cookie";
 
 export default function MainComponent() {
+  const cookies = new Cookies();
   const authInfoString = localStorage.getItem("auth");
   const authInfo = authInfoString ? JSON.parse(authInfoString) : null;
   const currentUserPhoto = authInfo ? authInfo.profilePhoto : null;
   const currentUserName = authInfo ? authInfo.name : null;
   const currentUserEmail = authInfo ? authInfo.email : null;
+
+  const [postInput, setPostInput] = useState("");
+
+  // const response = await axios.post('https://paladider.com/api/v1/auth/register', {
+  //               username,
+  //               email,
+  //               password,
+
+  //           }, {
+  //               headers: {
+  //                   'Content-Type': 'application/json',
+  //               },
+  //               withCredentials: true,
+  //           });
+
+  const createPost = async () => {
+    try {
+      const idTokenCookie = cookies.get("auth-token");
+      const { idToken } = idTokenCookie;
+      console.log(idToken);
+      if (!idToken) {
+        throw new Error("User not authenticated");
+      }
+      const config = {
+        headers: {
+          Authorization: `Bearer ${idToken}`,
+        },
+        withCredentials: true,
+      };
+      const { data } = await axios.post(
+        "http://localhost:8080/api/v1/post/create-post",
+        { content: postInput },
+        config
+      );
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+      alert(error);
+    }
+  };
 
   return (
     <main className=" flex min-w-[600px] max-w-[600px] h-full min-h-screen flex-col border-l-[0.5px] border-r-[0.5px] twitter-border-color">
@@ -56,6 +100,9 @@ export default function MainComponent() {
         <div className="flex flex-col w-full">
           <div className="flex flex-row items-center text-xl">
             <input
+              onChange={(e) => {
+                setPostInput(e.target.value);
+              }}
               type="text"
               placeholder="What's happening?!"
               className="w-full h-full bg-transparent p-1 outline-none border-none placeholder:text-gray-500"
@@ -82,7 +129,12 @@ export default function MainComponent() {
                 <LuMapPin className="w-[1.2rem] h-[1.2rem]" />
               </div>
             </div>
-            <button className="btn-primary p-2 px-5 text-sm">Post</button>
+            <button
+              className="btn-primary p-2 px-5 text-sm"
+              onClick={() => createPost()}
+            >
+              Post
+            </button>
           </div>
         </div>
       </div>

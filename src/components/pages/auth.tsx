@@ -3,13 +3,10 @@ import apple from "../../assets/apple.png";
 import GoogleLoginButton from "../button/googleLogin";
 
 const Auth: React.FC = () => {
-
   return (
     <div className="max-w-xxl w-auto bg-black text-slate-200 rounded-lg flex flex-col md:flex-col lg:flex-row min-h-screen p-5 py-10 space-y-10">
       {/* left  */}
-      <div
-        className="w-1/2 flex items-center justify-center"
-      >
+      <div className="w-1/2 flex items-center justify-center">
         <img className="w-10 sm:w-12 lg:w-80" src={logo} alt="Logo" />
       </div>
 
@@ -56,8 +53,7 @@ const Auth: React.FC = () => {
 
           <p className="text-gray-600 text-xs mt-0 max-w-[350px] space-x-1">
             By signing up, you agree to the &nbsp;
-            <span className="text-createBtn">Terms of Service</span>&nbsp;
-            and
+            <span className="text-createBtn">Terms of Service</span>&nbsp; and
             <span className="text-createBtn">Privacy Policy,</span>&nbsp;
             including
             <span className="text-createBtn">Cookie Use</span>
@@ -66,9 +62,7 @@ const Auth: React.FC = () => {
             Already have an account?
           </h2>
           <button className="bg-black text-createBtn border rounded-full hover:bg-blue-500 hover:bg-opacity-5 border-slate-700 font-semibold py-2 px-6 w-72 mt-2">
-            <a href="/login">
-              Sign in
-            </a>
+            <a href="/login">Sign in</a>
           </button>
         </div>
       </div>
