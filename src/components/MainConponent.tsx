@@ -10,6 +10,9 @@ import { SlCalender } from "react-icons/sl";
 import axios from "axios";
 import { useState } from "react";
 import Cookies from "universal-cookie";
+import apple from "../assets/apple.png";
+import { toast } from "react-toastify";
+import Post from "./Post";
 
 export default function MainComponent() {
   const cookies = new Cookies();
@@ -21,23 +24,11 @@ export default function MainComponent() {
 
   const [postInput, setPostInput] = useState("");
 
-  // const response = await axios.post('https://paladider.com/api/v1/auth/register', {
-  //               username,
-  //               email,
-  //               password,
-
-  //           }, {
-  //               headers: {
-  //                   'Content-Type': 'application/json',
-  //               },
-  //               withCredentials: true,
-  //           });
-
   const createPost = async () => {
     try {
       const idTokenCookie = cookies.get("auth-token");
       const { idToken } = idTokenCookie;
-      console.log(idToken);
+      // console.log(idToken);
       if (!idToken) {
         throw new Error("User not authenticated");
       }
@@ -56,6 +47,33 @@ export default function MainComponent() {
     } catch (error) {
       console.log(error);
       alert(error);
+    }
+  };
+  const registerUserHanlde = async () => {
+    try {
+      await axios.post(
+        "http://localhost:8080/api/v1/user/register",
+        {
+          name: "khurram",
+          email: "khurram16@gmail.com",
+          password: "khurram1235",
+          image:
+            "https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDF8fHxlbnwwfHx8fHw%3D",
+          coverImage:
+            "https://images.unsplash.com/photo-1531297484001-80022131f5a1?q=80&w=1120&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        },
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          withCredentials: true,
+        }
+      );
+    } catch (error) {
+      console.log(error);
+      console.log(error.message);
+      toast.error(error);
+      toast.error(error.message);
     }
   };
 
@@ -140,6 +158,19 @@ export default function MainComponent() {
       </div>
 
       {/* Posts Section */}
+
+      <Post />
+      {/* user register button to test the db or auth for backend */}
+
+      {/* <Button> register new user</Button> */}
+      <div className="flex items-center justify-center m-3 p-2 ">
+        <button
+          className="bg-white text-black cursor-pointer p-3 w-72 rounded hover:bg-black hover:text-white hover:border-white border  "
+          onClick={() => registerUserHanlde()}
+        >
+          register user
+        </button>
+      </div>
 
       <div className="posts flex flex-col">
         {Array.from({ length: 10 }).map((_, i) => (

@@ -11,6 +11,14 @@ import { FiSearch } from "react-icons/fi";
 import { MdHomeFilled } from "react-icons/md";
 import { getAuth, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export default function LeftSideBar() {
   const navigate = useNavigate();
@@ -20,6 +28,7 @@ export default function LeftSideBar() {
       const auth = getAuth();
       await signOut(auth);
       localStorage.removeItem("auth");
+      navigate("/");
     } catch (error) {
       console.error("Sign out error:", error.message);
     }
@@ -102,6 +111,22 @@ export default function LeftSideBar() {
               <FaFeatherAlt size={25} />
             </span>
           </button>
+          <DropdownMenu>
+            <DropdownMenuTrigger>Sign Out</DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>Profile</DropdownMenuItem>
+              {/* <DropdownMenuItem>Billing</DropdownMenuItem> */}
+              {/* <DropdownMenuItem>Team</DropdownMenuItem> */}
+              <DropdownMenuItem
+                className="text-xs cursor-pointer hover:bg-slate-400 hover:text-slate-100"
+                onClick={() => signOutHandle()}
+              >
+                Sign Out
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
         <button className="rounded-full flex items-center space-x-2 bg-transparent p-3 text-center surfing-link-hover transition duration-200 xl:w-[100%] w-full h-fit xl:max-w-full justify-between">
           <div className="flex items-center space-x-2">
